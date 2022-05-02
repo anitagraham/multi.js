@@ -53,7 +53,7 @@ multi(select_element, {
     "non_selected_header": null,
     "selected_header": null,
     "limit": -1,
-    "limit_reached": function () {},
+    "limit_reached": function () {},
     "hide_empty_groups": false,
 });
 ```
@@ -71,7 +71,7 @@ multi(select_element, {
 
 ### Limit
 
-You can add a limit of option selected for your select using the `limit` parameter. Default is -1, which means "no limit".
+You can add a limit of option selected for your select using the `limit` parameter. Default is -1, which means "no limit".
 
 ```javascript
 multi(select_element, {

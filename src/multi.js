@@ -5,23 +5,23 @@
  * Author: Fabian Lindfors
  * License: MIT
  */
-var multi = (function() {
-  var disabled_limit = false; // This will prevent to reset the "disabled" because of the limit at every click
+let multi = (function() {
+  let disabled_limit = false; // This will prevent to reset the "disabled" because of the limit at every click
 
   // Helper function to trigger an event on an element
-  var trigger_event = function(type, el) {
-    var e = document.createEvent("HTMLEvents");
+  const trigger_event = (type, el)  =>{
+    let e = document.createEvent("HTMLEvents");
     e.initEvent(type, false, true);
     el.dispatchEvent(e);
   };
 
    // Check if there is a limit and if is reached
-   var check_limit = function (select, settings) {
-    var limit = settings.limit;
+   const check_limit = (select, settings)  =>{
+    let limit = settings.limit;
     if (limit > -1) {
       // Count current selected
-      var selected_count = 0;
-      for (var i = 0; i < select.options.length; i++) {
+      let selected_count = 0;
+      for (let i = 0; i < select.options.length; i++) {
         if (select.options[i].selected) {
           selected_count++;
         }
@@ -37,8 +37,8 @@ var multi = (function() {
         }
 
         // Disable all non-selected option
-        for (var i = 0; i < select.options.length; i++) {
-          var opt = select.options[i];
+        for (let i = 0; i < select.options.length; i++) {
+          let opt = select.options[i];
 
           if (!opt.selected) {
             opt.setAttribute("disabled", true);
@@ -46,8 +46,8 @@ var multi = (function() {
         }
       } else if (this.disabled_limit) {
         // Enable options (only if they weren't disabled on init)
-        for (var i = 0; i < select.options.length; i++) {
-          var opt = select.options[i];
+        for (let i = 0; i < select.options.length; i++) {
+          let opt = select.options[i];
 
           if (opt.getAttribute("data-origin-disabled") === "false") {
             opt.removeAttribute("disabled");
@@ -60,8 +60,8 @@ var multi = (function() {
   };
 
   // Toggles the target option on the select
-  var toggle_option = function(select, event, settings) {
-    var option = select.options[event.target.getAttribute("multi-index")];
+  const toggle_option = (select, event, settings)  =>{
+    let option = select.options[event.target.getAttribute("multi-index")];
 
     if (option.disabled) {
       return;
@@ -75,18 +75,18 @@ var multi = (function() {
   };
 
   // Refreshes an already constructed multi.js instance
-  var refresh_select = function(select, settings) {
+  const refresh_select = (select, settings)  =>{
     // Clear columns
     select.wrapper.selected.innerHTML = "";
     select.wrapper.non_selected.innerHTML = "";
 
     // Add headers to columns
     if (settings.non_selected_header && settings.selected_header) {
-      var non_selected_header = document.createElement("div");
-      var selected_header = document.createElement("div");
+      let non_selected_header = document.createElement("div");
+      let selected_header = document.createElement("div");
 
-      non_selected_header.className = "header";
-      selected_header.className = "header";
+      non_selected_header.classList.add("header");
+      selected_header.classList.add("header");
 
       non_selected_header.innerText = settings.non_selected_header;
       selected_header.innerText = settings.selected_header;
@@ -97,36 +97,37 @@ var multi = (function() {
 
     // Get search value
     if (select.wrapper.search) {
-      var query = select.wrapper.search.value;
+      let query = select.wrapper.search.value;
     }
 
     // Current group
-    var item_group = null;
-    var current_optgroup = null;
+    let item_group = null;
+    let current_optgroup = null;
 
     // Loop over select options and add to the non-selected and selected columns
-    for (var i = 0; i < select.options.length; i++) {
-      var option = select.options[i];
+    for (let i = 0; i < select.options.length; i++) {
+      let option = select.options[i];
 
-      var value = option.value;
-      var label = option.textContent || option.innerText;
+      let value = option.value;
+      let label = option.textContent || option.innerText;
 
-      var row = document.createElement("a");
+      let row = document.createElement("a");
       row.tabIndex = 0;
-      row.className = "item";
+      row.classList.add(option.classList);
+      row.classList.add("item");
       row.innerText = label;
       row.setAttribute("role", "button");
       row.setAttribute("data-value", value);
       row.setAttribute("multi-index", i);
 
       if (option.disabled) {
-        row.className += " disabled";
+        row.classList += " disabled";
       }
 
       // Add row to selected column if option selected
       if (option.selected) {
-        row.className += " selected";
-        var clone = row.cloneNode(true);
+        row.classList += " selected";
+        let clone = row.cloneNode(true);
         select.wrapper.selected.appendChild(clone);
       }
 
@@ -137,12 +138,12 @@ var multi = (function() {
       ) {
         current_optgroup = option.parentNode;
         item_group = document.createElement("div");
-        item_group.className = "item-group";
+        item_group.classList.add("item-group");
 
         if (option.parentNode.label) {
-          var groupLabel = document.createElement("span");
+          let groupLabel = document.createElement("span");
           groupLabel.innerHTML = option.parentNode.label;
-          groupLabel.className = "group-label";
+          groupLabel.classList.add("group-label");
           item_group.appendChild(groupLabel);
         }
 
@@ -171,8 +172,8 @@ var multi = (function() {
 
     // Hide empty optgroups
     if (settings.hide_empty_groups) {
-      var optgroups = document.getElementsByClassName('item-group');
-      for (var i = 0; i < optgroups.length; i++) {
+      let optgroups = document.getElementsByclassName('item-group');
+      for (let i = 0; i < optgroups.length; i++) {
         // Hide optgroup if optgroup only contains a group label
         if (optgroups[i].childElementCount < 2) {
           optgroups[i].style.display = 'none';
@@ -182,7 +183,7 @@ var multi = (function() {
   };
 
   // Intializes and constructs an multi.js instance
-  var init = function(select, settings) {
+  const init = (select, settings)  =>{
     /**
      * Set up settings (optional parameter) and its default values
      *
@@ -235,13 +236,13 @@ var multi = (function() {
     select.setAttribute("data-multijs", true);
 
     // Start constructing selector
-    var wrapper = document.createElement("div");
-    wrapper.className = "multi-wrapper";
+    let wrapper = document.createElement("div");
+    wrapper.classList.add("multi-wrapper");
 
     // Add search bar
     if (settings.enable_search) {
-      var search = document.createElement("input");
-      search.className = "search-input";
+      let search = document.createElement("input");
+      search.classList.add("search-input");
       search.type = "text";
       search.setAttribute("placeholder", settings.search_placeholder);
       search.setAttribute("title", settings.search_placeholder);
@@ -255,11 +256,11 @@ var multi = (function() {
     }
 
     // Add columns for selected and non-selected
-    var non_selected = document.createElement("div");
-    non_selected.className = "non-selected-wrapper";
+    let non_selected = document.createElement("div");
+    non_selected.classList.add("non-selected-wrapper");
 
-    var selected = document.createElement("div");
-    selected.className = "selected-wrapper";
+    let selected = document.createElement("div");
+    selected.classList.add("selected-wrapper");
 
     // Add click handler to toggle the selected status
     wrapper.addEventListener("click", function(event) {
@@ -269,9 +270,9 @@ var multi = (function() {
     });
 
     // Add keyboard handler to toggle the selected status
-    wrapper.addEventListener("keypress", function(event) {
-      var is_action_key = event.keyCode === 32 || event.keyCode === 13;
-      var is_option = event.target.getAttribute("multi-index");
+    wrapper.addEventListener("key", function(event) {
+      let is_action_key = event.key === ' ' || event.key === 'Enter';
+      let is_option = event.target.getAttribute("multi-index");
 
       if (is_option && is_action_key) {
         // Prevent the default action to stop scrolling when space is pressed
@@ -292,8 +293,8 @@ var multi = (function() {
     select.parentNode.insertBefore(wrapper, select.nextSibling);
 
     // Save current state
-    for (var i = 0; i < select.options.length; i++) {
-      var option = select.options[i];
+    for (let i = 0; i < select.options.length; i++) {
+      let option = select.options[i];
       option.setAttribute("data-origin-disabled", option.disabled);
     }
 
@@ -319,7 +320,7 @@ if (typeof jQuery !== "undefined") {
       settings = typeof settings !== "undefined" ? settings : {};
 
       return this.each(function() {
-        var $select = $(this);
+        let $select = $(this);
 
         multi($select.get(0), settings);
       });
