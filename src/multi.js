@@ -85,8 +85,8 @@ var multi = (function() {
       var non_selected_header = document.createElement("div");
       var selected_header = document.createElement("div");
 
-      non_selected_header.className = "header";
-      selected_header.className = "header";
+      non_selected_header.classList.add("header");
+      selected_header.classList.add("header");
 
       non_selected_header.innerText = settings.non_selected_header;
       selected_header.innerText = settings.selected_header;
@@ -113,7 +113,8 @@ var multi = (function() {
 
       var row = document.createElement("a");
       row.tabIndex = 0;
-      row.className = "item";
+      row.classList.add(option.classList);
+      row.classList.add("item");
       row.innerText = label;
       row.setAttribute("role", "button");
       row.setAttribute("data-value", value);
@@ -132,17 +133,17 @@ var multi = (function() {
 
       // Create group if entering a new optgroup
       if (
-        option.parentNode.nodeName == "OPTGROUP" &&
-        option.parentNode != current_optgroup
+        option.parentNode.nodeName === "OPTGROUP" &&
+        option.parentNode !== current_optgroup
       ) {
         current_optgroup = option.parentNode;
         item_group = document.createElement("div");
-        item_group.className = "item-group";
+        item_group.classList.add("item-group");
 
         if (option.parentNode.label) {
           var groupLabel = document.createElement("span");
           groupLabel.innerHTML = option.parentNode.label;
-          groupLabel.className = "group-label";
+          groupLabel.classList.add("group-label");
           item_group.appendChild(groupLabel);
         }
 
@@ -150,7 +151,7 @@ var multi = (function() {
       }
 
       // Clear group if not inside optgroup
-      if (option.parentNode == select) {
+      if (option.parentNode === select) {
         item_group = null;
         current_optgroup = null;
       }
@@ -226,7 +227,7 @@ var multi = (function() {
     }
 
     // Make sure element is select and multiple is enabled
-    if (select.nodeName != "SELECT" || !select.multiple) {
+    if (select.nodeName !== "SELECT" || !select.multiple) {
       return;
     }
 
@@ -236,12 +237,12 @@ var multi = (function() {
 
     // Start constructing selector
     var wrapper = document.createElement("div");
-    wrapper.className = "multi-wrapper";
+    wrapper.classList.add("multi-wrapper");
 
     // Add search bar
     if (settings.enable_search) {
       var search = document.createElement("input");
-      search.className = "search-input";
+      search.classList.add("search-input");
       search.type = "text";
       search.setAttribute("placeholder", settings.search_placeholder);
       search.setAttribute("title", settings.search_placeholder);
@@ -256,10 +257,10 @@ var multi = (function() {
 
     // Add columns for selected and non-selected
     var non_selected = document.createElement("div");
-    non_selected.className = "non-selected-wrapper";
+    non_selected.classList.add("non-selected-wrapper");
 
     var selected = document.createElement("div");
-    selected.className = "selected-wrapper";
+    selected.classList.add("selected-wrapper");
 
     // Add click handler to toggle the selected status
     wrapper.addEventListener("click", function(event) {
